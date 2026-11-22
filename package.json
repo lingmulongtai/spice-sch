@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "test": "node --test test/*.test.cjs",
-    "check": "node --check converter.js && node --check app.js"
+    "check": "node --check converter.js && node --check app.js && node --check bundle.cjs",
+    "build": "node bundle.cjs"
   }
 }

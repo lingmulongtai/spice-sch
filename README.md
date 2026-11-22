@@ -25,4 +25,4 @@ MacのブラウザでSPICEネットリストを読み込み、MicroSim PSpice Sc
 
 ## 開発
 
-Node.jsの標準機能で `npm test` と `npm run check` を実行できます。ビルドと実行時依存パッケージはありません。
+Node.jsの標準機能で `npm test` と `npm run check` を実行できます。単一HTML版は `npm run build` で `dist/Spice-SCH.html` に生成されます。ビルド・実行ともに外部パッケージは不要です。
