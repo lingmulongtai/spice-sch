@@ -1,14 +1,102 @@
 <!doctype html>
-<html lang="ja" data-type="software"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="page-type" content="software"><meta name="site-kind" content="software"><meta name="theme-color" content="#17191d"><meta name="description" content="SPICEネットリストをブラウザ内で回路図に変換し、Schematics形式で保存します。"><title>回路図コンバーター · Spice / SCH</title><link rel="stylesheet" href="style.css"><script defer src="converter.js"></script><script defer src="app.js"></script></head>
-<body><a href="#editor" class="skip">入力へ移動</a>
-<header><div class="brand"><svg aria-hidden="true" viewBox="0 0 36 24"><path d="M1 12h7l3-8 5 16 5-16 5 16 3-8h6"/></svg>Spice<span>/</span>SCH</div><span class="local">ブラウザ内で処理</span></header>
-<main><section data-enter class="hero"><div class="wrap">
-<div class="intro"><div><span class="format">SPICE .cir <b>→</b> Schematics .sch</span><h1>回路図コンバーター</h1><p>ネットリストから部品と配線を読み取り、編集用の回路図を書き出します。</p></div><button id="download" class="primary">回路図を保存 <span aria-hidden="true">↓</span></button></div>
-<div class="bench">
-<div class="inputpanel"><div class="panelhead"><label for="editor">ネットリスト</label><button id="open">ファイルを開く</button><input type="file" id="file" accept=".cir,.net,.sp,.txt" hidden></div>
-<div class="source"><div id="numbers" aria-hidden="true"></div><textarea id="editor" spellcheck="false" autocapitalize="off" wrap="off"></textarea></div>
-<div class="example"><label for="sample">回路例</label><select id="sample"><option value="rc">RCローパスフィルタ</option><option value="amp">TDA2050 簡易モデル</option><option value="custom" disabled>編集中の回路</option></select></div></div>
-<div class="outpanel"><div class="panelhead"><h2>回路図プレビュー</h2><button id="zoom" aria-pressed="false">拡大</button></div><div class="sheet"><svg id="drawing" role="img" aria-label="入力したネットリストの回路図"></svg></div>
-<div class="stats" id="status" role="status"></div></div></div>
-<div class="info"><span>出力形式　MicroSim Schematics 8.0 相当（実験版）</span><details><summary>対応部品と互換性</summary><p>抵抗・コンデンサ・インダクタ・独立電圧源・電圧制御電圧源に対応。1行目には回路名を入力してください。20部品、24ノードまで。大学指定版での読み込み・再計算は未検証です。</p></details></div><div id="notice" role="status"></div>
-</div></section></main></body></html>
+<html lang="ja" data-type="software">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="page-type" content="software" />
+    <meta name="site-kind" content="software" />
+    <meta name="theme-color" content="#17191d" />
+    <meta
+      name="description"
+      content="SPICEネットリストをブラウザ内で回路図に変換し、Schematics形式で保存します。"
+    />
+    <title>回路図コンバーター · Spice / SCH</title>
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="converter.js"></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <a href="#editor" class="skip">入力へ移動</a>
+    <header>
+      <div class="brand">
+        <svg aria-hidden="true" viewBox="0 0 36 24">
+          <path d="M1 12h7l3-8 5 16 5-16 5 16 3-8h6" /></svg
+        >Spice<span>/</span>SCH
+      </div>
+      <span class="local">ブラウザ内で処理</span>
+    </header>
+    <main>
+      <section data-enter class="hero">
+        <div class="wrap">
+          <div class="intro">
+            <div>
+              <span class="format">SPICE .cir <b>→</b> Schematics .sch</span>
+              <h1>回路図コンバーター</h1>
+              <p>
+                ネットリストから部品と配線を読み取り、編集用の回路図を書き出します。
+              </p>
+            </div>
+            <button id="download" class="primary">
+              回路図を保存 <span aria-hidden="true">↓</span>
+            </button>
+          </div>
+          <div class="bench">
+            <div class="inputpanel">
+              <div class="panelhead">
+                <label for="editor">ネットリスト</label
+                ><button id="open">ファイルを開く</button
+                ><input
+                  type="file"
+                  id="file"
+                  accept=".cir,.net,.sp,.txt"
+                  hidden
+                />
+              </div>
+              <div class="source">
+                <div id="numbers" aria-hidden="true"></div>
+                <textarea
+                  id="editor"
+                  spellcheck="false"
+                  autocapitalize="off"
+                  wrap="off"
+                ></textarea>
+              </div>
+              <div class="example">
+                <label for="sample">回路例</label
+                ><select id="sample">
+                  <option value="rc">RCローパスフィルタ</option>
+                  <option value="amp">TDA2050 簡易モデル</option>
+                  <option value="custom" disabled>編集中の回路</option>
+                </select>
+              </div>
+            </div>
+            <div class="outpanel">
+              <div class="panelhead">
+                <h2>回路図プレビュー</h2>
+                <button id="zoom" aria-pressed="false">拡大</button>
+              </div>
+              <div class="sheet">
+                <svg
+                  id="drawing"
+                  role="img"
+                  aria-label="入力したネットリストの回路図"
+                ></svg>
+              </div>
+              <div class="stats" id="status" role="status"></div>
+            </div>
+          </div>
+          <div class="info">
+            <span>出力形式　MicroSim Schematics 8.0 相当（実験版）</span>
+            <details>
+              <summary>対応部品と互換性</summary>
+              <p>
+                抵抗・コンデンサ・インダクタ・独立電圧源・電圧制御電圧源に対応。1行目には回路名を入力してください。20部品、24ノードまで。大学指定版での読み込み・再計算は未検証です。
+              </p>
+            </details>
+          </div>
+          <div id="notice" role="status"></div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
