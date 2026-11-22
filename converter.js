@@ -77,7 +77,7 @@ const SpiceSch = (() => {
       run('0',[[310,124],[336,124],[336,196],[60,196],[60,150]],[[310,124,`p ${cap.id} 2`],[60,150,`p ${v.id} -`]]);
       const ground=wire('0'), id=next++;
       path(ground,[[60,196],[60,216]]); ports.push({id,x:60,y:216});
-      ground.joins.push([60,216,`s ${id}`]); ground.taps.push([], [60,196], []);
+      ground.joins.push([60,216,`s ${id}`]); ground.branches=[[60,196]];
       return {...model,parts,nets:[...nets.values()],ports,next,width:400,height:260};
     }
     for (const p of model.parts) p.pins.forEach(wire);
@@ -115,7 +115,7 @@ const SpiceSch = (() => {
       }
       path(net,net.taps);
     }
-    return {parts, nets:[...nets.values()],ports,next,width:x+180,height:160+80*(parts.length-1),...{analysis:model.analysis,notes:model.notes}};
+    return {parts, nets:[...nets.values()],ports,next,width:x+180,height:160+80*(parts.length-1),analysis:model.analysis,notes:model.notes};
   }
 
   function serialize(d) {
@@ -136,11 +136,18 @@ const SpiceSch = (() => {
     page.push('@junction');
     for (const n of d.nets) {
       for (const [x,y,ref] of n.joins) page.push(`j ${x} ${y}`,`+ ${ref}`,`+ w ${n.id}`);
-      for (const [x,y] of n.taps.slice(1,-1)) page.push(`j ${x} ${y}`,`+ w ${n.id}`,`+ w ${n.id}`);
+      for (const [x,y] of n.branches ?? n.taps.slice(1,-1)) page.push(`j ${x} ${y}`,`+ w ${n.id}`,`+ w ${n.id}`);
     }
     page.push('@attributes','a 0 s 0:13 0 0 0 hln 100 PAGESIZE=A2','@graphics','');
     const body=page.join('\n');
-    const header=['*version 8.0 0',`u ${d.next}`,'@libraries','@analysis'];
+    const header=['*version 8.0 0',`u ${d.next}`];
+    const counters=new Map();
+    for (const p of d.parts) {
+      const numeric=/^[a-z](\d{1,8})$/i.exec(p.ref);
+      counters.set(p.kind,Math.max(counters.get(p.kind) || 1,numeric ? Number(numeric[1])+1 : 1));
+    }
+    for (const [kind,next] of counters) header.push(`${kind}? ${next}`);
+    header.push('@libraries','@analysis');
     if (d.analysis) header.push('.AC 1 3 0',...d.analysis.map((v,i)=>`+${i} ${v}`));
     header.push('@targets','@attributes','@translators','a 0 u 13 0 0 0 hln 100 PSPICE=PSPICE','@setup','connectViaLabel 0','@index',`pageloc 1 0 ${body.length} `,'@status','');
     return header.join('\n')+body;

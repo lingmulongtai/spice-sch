@@ -21,7 +21,7 @@ function paint(d) {
   drawing.style.width=large?d.width*2+'px':'100%';
   for(const n of d.nets) {
     for (const [x,y,a,b] of n.segments) trace(`M${x} ${y}L${a} ${b}`);
-    for (const [x,y] of n.taps.slice(1,-1)) vector('circle',{cx:x,cy:y,r:2.6,fill:'#124fd1'});
+    for (const [x,y] of n.branches ?? n.taps.slice(1,-1)) vector('circle',{cx:x,cy:y,r:2.6,fill:'#124fd1'});
     if(n.node!=='0'){
       const [x,y,a,b]=n.segments[0];
       label((x+a)/2+3,(y+b)/2-5,n.node,8,'#124fd1');
