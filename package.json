@@ -1,0 +1,9 @@
+{
+  "name": "spice-sch",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "node --test test/*.test.cjs",
+    "check": "node --check converter.js && node --check app.js"
+  }
+}
